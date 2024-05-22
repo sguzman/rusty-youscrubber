@@ -13,4 +13,5 @@ fn main() {
     init_logger();
     info!("Hello, world!");
     validate_json_files();
+    info!("Goodbye, world!");
 }
