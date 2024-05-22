@@ -74,6 +74,14 @@ pub struct HeatMap {
     pub value: Option<f32>,
 }
 
+// pub Struct to represent the subtitles field in the json files
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
+pub struct Subtitle {
+    pub ext: Option<String>,
+    pub name: Option<String>,
+    pub url: Option<String>,
+}
+
 // pub Struct to represent the entry field in the json files
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
 pub struct Video {
@@ -138,6 +146,29 @@ pub struct Video {
     pub protocol: Option<String>,
     pub release_date: Option<String>,
     pub release_year: Option<u32>,
+    //pub requested_downloads: Option<Vec<String>>,
+    //pub requested_formats: Option<Vec<String>>,
+    //pub requested_subtitles: Option<Vec<String>>,
+    pub resolution: Option<String>,
+    pub stretched_ratio: Option<f32>,
+    pub subtitles: Option<HashMap<String, Vec<Subtitle>>>,
+    pub tags: Option<Vec<String>>,
+    pub tbr: Option<f32>,
+    pub thumbnail: Option<String>,
+    pub thumbnails: Option<Vec<VideoThumbnail>>,
+    title: Option<String>,
+    upload_date: Option<String>,
+    uploader: Option<String>,
+    uploader_id: Option<String>,
+    uploader_url: Option<String>,
+    vbr: Option<f32>,
+    vcodec: Option<String>,
+    view_count: Option<u64>,
+    was_live: Option<bool>,
+    webpage_url: Option<String>,
+    webpage_url_basename: Option<String>,
+    webpage_url_domain: Option<String>,
+    width: Option<u32>,
 }
 
 // pub Struct to represent the thumbnails field in the json files
@@ -148,6 +179,14 @@ pub struct ChannelThumbnail {
     pub resolution: Option<String>,
     pub url: Option<String>,
     pub width: Option<u32>,
+}
+
+// pub Struct to represent the thumbnails field in the json files
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
+pub struct VideoThumbnail {
+    pub id: Option<String>,
+    pub preference: Option<i32>,
+    pub url: Option<String>,
 }
 
 // Structs to represent the json files
