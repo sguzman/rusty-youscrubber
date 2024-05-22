@@ -1,31 +1,31 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-// Struct to represent the files_to_move field in the json files
+// pub Struct to represent the files_to_move field in the json files
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
-struct FilesToMove {}
+pub struct FilesToMove {}
 
-// Struct to represent the version field in the json files
+// pub Struct to represent the version field in the json files
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
-struct Version {
+pub struct Version {
     pub current_git_head: Option<String>,
     pub release_git_head: Option<String>,
     pub repository: Option<String>,
     pub version: Option<String>,
 }
 
-// Struct to represent the automatic_captions field in the json files
+// pub Struct to represent the automatic_captions field in the json files
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
-struct AutomaticCaption {
+pub struct AutomaticCaption {
     pub ext: Option<String>,
     pub protocol: Option<String>,
     pub url: Option<String>,
     pub name: Option<String>,
 }
 
-// Struct to represent the entry field in the json files
+// pub Struct to represent the entry field in the json files
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
-struct Video {
+pub struct Video {
     #[serde(rename = "__last_playlist_index")]
     pub last_playlist_index: Option<u32>,
 
@@ -44,9 +44,9 @@ struct Video {
     pub automatic_captions: Option<HashMap<String, Vec<AutomaticCaption>>>,
 }
 
-// Struct to represent the thumbnails field in the json files
+// pub Struct to represent the thumbnails field in the json files
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
-struct ChannelThumbnail {
+pub struct ChannelThumbnail {
     pub height: Option<u32>,
     pub id: Option<String>,
     pub resolution: Option<String>,
