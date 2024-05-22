@@ -2,7 +2,7 @@ use std::path::Path;
 
 // Import the Payload struct from the data.rs
 mod data;
-use data::Payload;
+use data::Channel;
 
 // Iterate across all the json files in resources directory
 pub fn validate_json_files() {
@@ -24,7 +24,7 @@ pub fn validate_json_files() {
         // Use serde to parse the json file
         let contents =
             std::fs::read_to_string(file).expect("Something went wrong reading the file");
-        let payload: Payload = serde_json::from_str(&contents).expect("Error parsing json");
+        let payload: Channel = serde_json::from_str(&contents).expect("Error parsing json");
         println!("{:#?}", payload);
     }
 }
