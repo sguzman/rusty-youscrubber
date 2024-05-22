@@ -25,6 +25,6 @@ pub fn validate_json_files() {
         let contents =
             std::fs::read_to_string(file).expect("Something went wrong reading the file");
         let payload: Payload = serde_json::from_str(&contents).expect("Error parsing json");
-        println!("{:?}", payload);
+        println!("{:#?}", payload);
     }
 }
