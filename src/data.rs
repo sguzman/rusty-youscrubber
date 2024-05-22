@@ -66,6 +66,14 @@ pub struct Format {
     pub width: Option<u32>,
 }
 
+// pub Struct to represent the heatmaps field in the json files
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
+pub struct HeatMap {
+    pub end_time: Option<f32>,
+    pub start_time: Option<f32>,
+    pub value: Option<f32>,
+}
+
 // pub Struct to represent the entry field in the json files
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
 pub struct Video {
@@ -86,27 +94,30 @@ pub struct Video {
     // Map of string to AutomaticCaption
     pub automatic_captions: Option<HashMap<String, Vec<AutomaticCaption>>>,
 
-    availability: Option<String>,
-    average_rating: Option<f32>,
-    categories: Option<Vec<String>>,
-    channel: Option<String>,
-    channel_follower_count: Option<u64>,
-    channel_id: Option<String>,
-    channel_url: Option<String>,
-    chapters: Option<Vec<Chapters>>,
-    comment_count: Option<u64>,
-    description: Option<String>,
-    display_id: Option<String>,
-    duration: Option<u32>,
-    epoch: Option<u64>,
-    ext: Option<String>,
-    extractor: Option<String>,
-    extractor_key: Option<String>,
-    filesize_approx: Option<u64>,
-    format: Option<String>,
-    format_id: Option<String>,
-    format_note: Option<String>,
-    formats: Option<Vec<Format>>,
+    pub availability: Option<String>,
+    pub average_rating: Option<f32>,
+    pub categories: Option<Vec<String>>,
+    pub channel: Option<String>,
+    pub channel_follower_count: Option<u64>,
+    pub channel_id: Option<String>,
+    pub channel_url: Option<String>,
+    pub chapters: Option<Vec<Chapters>>,
+    pub comment_count: Option<u64>,
+    pub description: Option<String>,
+    pub display_id: Option<String>,
+    pub duration: Option<u32>,
+    pub epoch: Option<u64>,
+    pub ext: Option<String>,
+    pub extractor: Option<String>,
+    pub extractor_key: Option<String>,
+    pub filesize_approx: Option<u64>,
+    pub format: Option<String>,
+    pub format_id: Option<String>,
+    pub format_note: Option<String>,
+    pub formats: Option<Vec<Format>>,
+    pub fps: Option<f32>,
+    pub fulltitle: Option<String>,
+    pub heatmaps: Option<Vec<HeatMap>>,
 }
 
 // pub Struct to represent the thumbnails field in the json files
