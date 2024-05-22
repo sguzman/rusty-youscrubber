@@ -1,7 +1,7 @@
 use std::path::Path;
 
 // Import the log and env_logger crates
-use log::{error, info};
+use log::{debug, error, info};
 
 // Import the Payload struct from the data.rs
 mod data;
@@ -30,7 +30,8 @@ pub fn validate_json_files() {
         let res_payload: Result<Channel, _> = serde_json::from_str(&contents);
         match res_payload {
             Ok(payload) => {
-                info!("{:#?}", payload);
+                debug!("{:#?}", payload);
+                info!("File {:#?} is valid", payload.title);
             }
             Err(e) => {
                 error!("Error: {}", e);

@@ -5,7 +5,7 @@ use log::info;
 // Set logging to debug
 fn init_logger() {
     let mut builder = env_logger::Builder::from_default_env();
-    builder.filter_level(log::LevelFilter::Debug);
+    builder.filter_level(log::LevelFilter::Info);
     builder.init();
 }
 
