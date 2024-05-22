@@ -14,6 +14,7 @@ pub struct Version {
 // pub Struct to represent the automatic_captions field in the json files
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct AutomaticCaption {
+    pub video_id: Option<String>,
     pub ext: Option<String>,
     pub protocol: Option<String>,
     pub url: Option<String>,
@@ -23,6 +24,7 @@ pub struct AutomaticCaption {
 // pub Struct to represent the chapters field in the json files
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct Chapters {
+    pub video_id: Option<String>,
     pub start_time: Option<f32>,
     pub end_time: Option<f32>,
     pub title: Option<String>,
@@ -31,6 +33,7 @@ pub struct Chapters {
 // pub Struct to represent the fragment field in the json files
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct Fragment {
+    pub video_id: Option<String>,
     pub duration: Option<f32>,
     pub url: Option<String>,
 }
