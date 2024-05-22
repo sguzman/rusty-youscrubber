@@ -41,7 +41,7 @@ pub struct Fragment {
 // pub Struct to represent the format field in the json files
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
 pub struct Format {
-    pub abr: Option<u32>,
+    pub abr: Option<f32>,
     pub acodec: Option<String>,
     pub aspect_ratio: Option<f32>,
     pub audio_ext: Option<String>,
@@ -60,7 +60,7 @@ pub struct Format {
     pub rows: Option<u32>,
     pub tbr: Option<f32>,
     pub url: Option<String>,
-    pub vbr: Option<u32>,
+    pub vbr: Option<f32>,
     pub vcodec: Option<String>,
     pub video_ext: Option<String>,
     pub width: Option<u32>,
