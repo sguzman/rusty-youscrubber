@@ -56,4 +56,12 @@ pub struct Channel {
     release_year: Option<u32>,
     tags: Vec<String>,
     thumbnails: Vec<ChannelThumbnail>,
+    title: Option<String>,
+    uploader: Option<String>,
+    uploader_id: Option<String>,
+    uploader_url: Option<String>,
+    view_count: Option<u64>,
+    webpage_url: Option<String>,
+    webpage_url_basename: Option<String>,
+    webpage_url_domain: Option<String>,
 }
