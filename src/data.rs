@@ -13,6 +13,10 @@ struct Version {
     version: Option<String>,
 }
 
+// Struct to represent the entry field in the json files
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash, Default)]
+struct Entry {}
+
 // Structs to represent the json files
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash, Default)]
 pub struct Payload {
@@ -24,4 +28,12 @@ pub struct Payload {
 
     #[serde(rename = "_version")]
     version: Version,
+
+    availability: Option<String>,
+    channel: Option<String>,
+    channel_follower_count: Option<u64>,
+    channel_id: Option<String>,
+    channel_url: Option<String>,
+    description: Option<String>,
+    entries: Vec<Entry>,
 }
