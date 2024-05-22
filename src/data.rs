@@ -31,6 +31,41 @@ pub struct Chapters {
     pub title: Option<String>,
 }
 
+// pub Struct to represent the fragment field in the json files
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
+pub struct Fragment {
+    pub duration: Option<f32>,
+    pub url: Option<String>,
+}
+
+// pub Struct to represent the format field in the json files
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
+pub struct Format {
+    pub abr: Option<u32>,
+    pub acodec: Option<String>,
+    pub aspect_ratio: Option<f32>,
+    pub audio_ext: Option<String>,
+    pub columns: Option<u32>,
+    pub ext: Option<String>,
+    pub filesize_approx: Option<u64>,
+    pub format: Option<String>,
+    pub format_id: Option<String>,
+    pub format_note: Option<String>,
+    pub fps: Option<f32>,
+    pub fragments: Option<Vec<Fragment>>,
+    pub height: Option<u32>,
+    pub http_headers: Option<HashMap<String, String>>,
+    pub protocol: Option<String>,
+    pub resolution: Option<String>,
+    pub rows: Option<u32>,
+    pub tbr: Option<f32>,
+    pub url: Option<String>,
+    pub vbr: Option<u32>,
+    pub vcodec: Option<String>,
+    pub video_ext: Option<String>,
+    pub width: Option<u32>,
+}
+
 // pub Struct to represent the entry field in the json files
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
 pub struct Video {
@@ -71,6 +106,7 @@ pub struct Video {
     format: Option<String>,
     format_id: Option<String>,
     format_note: Option<String>,
+    formats: Option<Vec<Format>>,
 }
 
 // pub Struct to represent the thumbnails field in the json files
