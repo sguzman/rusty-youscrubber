@@ -179,7 +179,7 @@ pub struct Video {
     pub release_year: Option<u32>,
     pub requested_downloads: Option<Vec<RequestedDownload>>,
     pub requested_formats: Option<Vec<Format>>,
-    //pub requested_subtitles: Option<Vec<String>>,
+    pub requested_subtitles: Option<Vec<Subtitle>>,
     pub resolution: Option<String>,
     pub stretched_ratio: Option<f32>,
     pub subtitles: Option<HashMap<String, Vec<Subtitle>>>,
