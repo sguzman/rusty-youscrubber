@@ -1,5 +1,8 @@
 use std::path::Path;
 
+// Import the log and env_logger crates
+use log::{error, info};
+
 // Import the Payload struct from the data.rs
 mod data;
 use data::Channel;
@@ -24,7 +27,15 @@ pub fn validate_json_files() {
         // Use serde to parse the json file
         let contents =
             std::fs::read_to_string(file).expect("Something went wrong reading the file");
-        let payload: Channel = serde_json::from_str(&contents).expect("Error parsing json");
-        println!("{:#?}", payload);
+        let res_payload: Result<Channel, _> = serde_json::from_str(&contents);
+        match res_payload {
+            Ok(payload) => {
+                info!("{:#?}", payload);
+            }
+            Err(e) => {
+                error!("Error: {}", e);
+                std::process::exit(1);
+            }
+        }
     }
 }

@@ -1,11 +1,12 @@
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 // Struct to represent the files_to_move field in the json files
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
 struct FilesToMove {}
 
 // Struct to represent the version field in the json files
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
 struct Version {
     current_git_head: Option<String>,
     release_git_head: Option<String>,
@@ -13,12 +14,38 @@ struct Version {
     version: Option<String>,
 }
 
+// Struct to represent the automatic_captions field in the json files
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
+struct AutomaticCaption {
+    ext: Option<String>,
+    protocol: Option<String>,
+    url: Option<String>,
+    name: Option<String>,
+}
+
 // Struct to represent the entry field in the json files
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash, Default)]
-struct Video {}
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
+struct Video {
+    #[serde(rename = "__last_playlist_index")]
+    last_playlist_index: Option<u32>,
+
+    #[serde(rename = "_format_sort_fields")]
+    format_sort_fields: Option<String>,
+    #[serde(rename = "_has_drm")]
+    has_drm: Option<bool>,
+    abr: Option<f32>,
+    acodec: Option<String>,
+    age_limit: Option<u32>,
+    aspect_ratio: Option<f32>,
+    asr: Option<u32>,
+    audio_channels: Option<u8>,
+
+    // Map of string to AutomaticCaption
+    automatic_captions: Option<HashMap<String, Vec<AutomaticCaption>>>,
+}
 
 // Struct to represent the thumbnails field in the json files
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
 struct ChannelThumbnail {
     height: Option<u32>,
     id: Option<String>,
@@ -28,7 +55,7 @@ struct ChannelThumbnail {
 }
 
 // Structs to represent the json files
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Hash, Default)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
 pub struct Channel {
     #[serde(rename = "__files_to_move")]
     files_to_move: FilesToMove,
