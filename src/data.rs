@@ -23,6 +23,14 @@ pub struct AutomaticCaption {
     pub name: Option<String>,
 }
 
+// pub Struct to represent the chapters field in the json files
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
+pub struct Chapters {
+    pub start_time: Option<f32>,
+    pub end_time: Option<f32>,
+    pub title: Option<String>,
+}
+
 // pub Struct to represent the entry field in the json files
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Default)]
 pub struct Video {
@@ -42,6 +50,27 @@ pub struct Video {
 
     // Map of string to AutomaticCaption
     pub automatic_captions: Option<HashMap<String, Vec<AutomaticCaption>>>,
+
+    availability: Option<String>,
+    average_rating: Option<f32>,
+    categories: Option<Vec<String>>,
+    channel: Option<String>,
+    channel_follower_count: Option<u64>,
+    channel_id: Option<String>,
+    channel_url: Option<String>,
+    chapters: Option<Vec<Chapters>>,
+    comment_count: Option<u64>,
+    description: Option<String>,
+    display_id: Option<String>,
+    duration: Option<u32>,
+    epoch: Option<u64>,
+    ext: Option<String>,
+    extractor: Option<String>,
+    extractor_key: Option<String>,
+    filesize_approx: Option<u64>,
+    format: Option<String>,
+    format_id: Option<String>,
+    format_note: Option<String>,
 }
 
 // pub Struct to represent the thumbnails field in the json files
