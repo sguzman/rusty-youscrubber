@@ -1,4 +1,4 @@
-use log::info;
+use log::debug;
 use sea_orm::prelude::DateTime;
 use sea_orm::ActiveValue::{NotSet, Set};
 use sea_orm::{ActiveModelTrait, ActiveValue, DatabaseConnection};
@@ -91,10 +91,10 @@ pub async fn create(db: &DatabaseConnection, payload: data::Channel) {
 
     match inserted {
         Ok(i) => {
-            info!("Record inserted");
+            debug!("Record inserted");
 
             // Initialize Channel Thumbnails
-            ctor::channel_thumbnails::create(&db, i.id, payload.thumbnails);
+            ctor::channel_thumbnails::create(&db, i.id, payload.thumbnails).await;
 
             // Initialize entries
             //entries(&db, payload.entries);
@@ -106,7 +106,7 @@ pub async fn create(db: &DatabaseConnection, payload: data::Channel) {
             ctor::channel_tags::create(&db, i.id, payload.tags).await;
         }
         Err(e) => {
-            info!("Error: {}", e);
+            debug!("Error: {}", e);
         }
     }
 }

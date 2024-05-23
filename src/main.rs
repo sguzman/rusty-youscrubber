@@ -9,16 +9,15 @@ mod integrate;
 pub mod sea_orm_models;
 
 use integrate::insert;
-use yourust::validate_json_files;
 
 // Set logging to debug
 fn init_logger() {
     let mut builder = env_logger::Builder::from_default_env();
-    builder.filter_level(log::LevelFilter::Debug);
+    builder.filter_level(log::LevelFilter::Info);
     builder.init();
 }
 
-pub async fn convert_json_to_db() {
+pub async fn convert_json_to_db() -> Vec<data::Channel> {
     let path = Path::new("resources");
 
     let mut files = Vec::new();
@@ -32,6 +31,7 @@ pub async fn convert_json_to_db() {
         }
     }
 
+    let mut channels = Vec::new();
     for file in files {
         println!("{}", file.display());
         // Use serde to parse the json file
@@ -41,7 +41,7 @@ pub async fn convert_json_to_db() {
         match res_payload {
             Ok(payload) => {
                 info!("File {:#?} is valid", payload.title);
-                insert(payload).await;
+                channels.push(payload);
             }
             Err(e) => {
                 error!("Error: {}", e);
@@ -49,13 +49,15 @@ pub async fn convert_json_to_db() {
             }
         }
     }
+
+    channels
 }
 
 #[tokio::main]
 async fn main() {
     init_logger();
     info!("Hello, world!");
-    validate_json_files();
-    convert_json_to_db().await;
+    let cs = convert_json_to_db().await;
+    insert(cs).await;
     info!("Goodbye, world!");
 }

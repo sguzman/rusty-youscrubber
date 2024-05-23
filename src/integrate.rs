@@ -11,18 +11,18 @@ use crate::sea_orm_models as sea;
 use crate::data;
 
 async fn db_connect() -> DatabaseConnection {
-    info!("Connecting to database");
+    debug!("Connecting to database");
     let mut opt = ConnectOptions::new("sqlite://data.db?mode=rwc");
     opt.max_connections(100)
         .min_connections(5)
         .sqlx_logging(true)
-        .sqlx_logging_level(log::LevelFilter::Debug)
-        .set_schema_search_path("my_schema"); // Setting default PostgreSQL schema
+        .sqlx_logging_level(log::LevelFilter::Info)
+        .set_schema_search_path("data"); // Setting default PostgreSQL schema
 
     debug!("{:#?}", opt);
 
     let db = Database::connect(opt).await.unwrap();
-    info!("Connected to database");
+    debug!("Connected to database");
     drop_tables(&db).await;
     create_tables(&db).await;
 
@@ -31,7 +31,7 @@ async fn db_connect() -> DatabaseConnection {
 
 // Drop table
 pub async fn drop_tables(db: &DatabaseConnection) {
-    info!("Dropping tables");
+    debug!("Dropping tables");
 
     drop_table::<sea::videothumbnail::Entity>(&db).await;
     drop_table::<sea::videocategory::Entity>(&db).await;
@@ -58,9 +58,8 @@ async fn drop_table<T>(db: &DatabaseConnection)
 where
     T: EntityTrait,
 {
-    info!("Dropping table {:#?}", T::default());
+    debug!("Dropping table {:#?}", T::default());
     let db_sqlite = db.get_database_backend();
-    let schema = Schema::new(db_sqlite);
     let mut table = Table::drop();
     let t = table.table::<T>(T::default());
 
@@ -69,9 +68,9 @@ where
     let result = db.execute(Statement::from(b)).await;
 
     match result {
-        Ok(_) => info!("Table dropped"),
+        Ok(_) => debug!("Table dropped"),
         Err(e) => {
-            warn!("Error: {}", e);
+            debug!("Error: {}", e);
         }
     }
 }
@@ -102,7 +101,7 @@ async fn create_table<T>(db: &DatabaseConnection)
 where
     T: EntityTrait,
 {
-    info!("Creating table");
+    debug!("Creating table");
     let db_sqlite = db.get_database_backend();
     let schema = Schema::new(db_sqlite);
 
@@ -111,17 +110,20 @@ where
     let result = db.execute(Statement::from(b)).await;
 
     match result {
-        Ok(_) => info!("Table created"),
+        Ok(_) => debug!("Table created"),
         Err(e) => {
             panic!("Error: {}", e);
         }
     }
 }
 
-pub async fn insert(payload: data::Channel) {
+pub async fn insert(payload: Vec<data::Channel>) {
     let db = db_connect().await;
-    ctor::payload::create(&db, payload).await;
+    for pay in payload {
+        ctor::payload::create(&db, pay).await;
 
-    info!("Record inserted");
+        debug!("Record inserted");
+    }
+
     db.close().await.unwrap();
 }
