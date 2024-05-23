@@ -40,8 +40,8 @@ pub async fn convert_json_to_db() {
         let res_payload: Result<data::Channel, _> = serde_json::from_str(&contents);
         match res_payload {
             Ok(payload) => {
-                info!("{:#?}", payload);
-                debug!("File {:#?} is valid", payload.title);
+                debug!("{:#?}", payload);
+                info!("File {:#?} is valid", payload.title);
                 create(payload).await;
             }
             Err(e) => {

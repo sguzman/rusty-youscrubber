@@ -1,4 +1,4 @@
-use log::info;
+use log::{debug, info};
 use sea_orm::prelude::DateTime;
 use sea_orm::ActiveValue::{NotSet, Set};
 use sea_orm::{ActiveModelTrait, ActiveValue, ConnectOptions, Database, DatabaseConnection};
@@ -8,11 +8,11 @@ use crate::sea_orm_models::payload::ActiveModel;
 use crate::data;
 
 async fn db_connect() -> DatabaseConnection {
-    let mut opt = ConnectOptions::new("sqlite://db.sqlite?mode=rwc");
+    let mut opt = ConnectOptions::new("sqlite://data.db?mode=rwc");
     opt.max_connections(100)
         .min_connections(5)
         .sqlx_logging(true)
-        .sqlx_logging_level(log::LevelFilter::Info)
+        .sqlx_logging_level(log::LevelFilter::Debug)
         .set_schema_search_path("my_schema"); // Setting default PostgreSQL schema
 
     Database::connect(opt).await.unwrap()
@@ -72,7 +72,7 @@ fn setu3i(option: Option<u32>) -> ActiveValue<Option<i32>> {
 
 pub async fn create(payload: data::Channel) {
     let db = db_connect();
-    info!("{:#?}", payload);
+    debug!("{:#?}", payload);
 
     let a = ActiveModel {
         channel: set(payload.channel),
