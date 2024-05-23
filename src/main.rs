@@ -3,11 +3,12 @@ use log::info;
 
 use std::path::Path;
 
+mod constructors;
 pub mod data;
 mod integrate;
 pub mod sea_orm_models;
 
-use integrate::create;
+use integrate::insert;
 use yourust::validate_json_files;
 
 // Set logging to debug
@@ -40,7 +41,7 @@ pub async fn convert_json_to_db() {
         match res_payload {
             Ok(payload) => {
                 info!("File {:#?} is valid", payload.title);
-                create(payload).await;
+                insert(payload).await;
             }
             Err(e) => {
                 error!("Error: {}", e);

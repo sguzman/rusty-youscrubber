@@ -15,6 +15,8 @@ pub struct Model {
     pub channel_id: String,
     pub channel_url: Option<String>,
     pub description: Option<String>,
+    // Unique
+    #[sea_orm(unique)]
     pub epoch: Option<DateTime>,
     pub extractor: Option<String>,
     pub extractor_key: Option<String>,

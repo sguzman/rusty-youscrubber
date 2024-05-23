@@ -1,7 +1,7 @@
 use std::path::Path;
 
 // Import the log and env_logger crates
-use log::{debug, error, info};
+use log::{error, info};
 
 // Import the Payload struct from the data.rs
 mod data;
