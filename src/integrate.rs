@@ -1,10 +1,10 @@
 use log::{debug, info};
 use sea_orm::prelude::DateTime;
 use sea_orm::ActiveValue::{NotSet, Set};
-use sea_orm::Schema;
 use sea_orm::{
     ActiveModelTrait, ActiveValue, ConnectOptions, ConnectionTrait, Database, DatabaseConnection,
 };
+use sea_orm::{Schema, Statement};
 
 use crate::sea_orm_models::payload::ActiveModel;
 
@@ -29,7 +29,17 @@ async fn create_table(db: &DatabaseConnection) {
     let db_sqlite = db.get_database_backend();
     let schema = Schema::new(db_sqlite);
 
-    db_sqlite.build(&schema.create_table_from_entity(crate::sea_orm_models::payload::Entity));
+    let b =
+        db_sqlite.build(&schema.create_table_from_entity(crate::sea_orm_models::payload::Entity));
+
+    let result = db.execute(Statement::from(b)).await;
+
+    match result {
+        Ok(_) => info!("Table created"),
+        Err(e) => {
+            info!("Error: {}", e);
+        }
+    }
 }
 
 // If option set to None, set to NotSet
