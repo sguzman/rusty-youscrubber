@@ -14,7 +14,7 @@ use yourust::validate_json_files;
 // Set logging to debug
 fn init_logger() {
     let mut builder = env_logger::Builder::from_default_env();
-    builder.filter_level(log::LevelFilter::Info);
+    builder.filter_level(log::LevelFilter::Debug);
     builder.init();
 }
 
@@ -40,7 +40,6 @@ pub async fn convert_json_to_db() {
         let res_payload: Result<data::Channel, _> = serde_json::from_str(&contents);
         match res_payload {
             Ok(payload) => {
-                debug!("{:#?}", payload);
                 info!("File {:#?} is valid", payload.title);
                 create(payload).await;
             }

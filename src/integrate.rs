@@ -86,7 +86,6 @@ fn setu3i(option: Option<u32>) -> ActiveValue<Option<i32>> {
 
 pub async fn create(payload: data::Channel) {
     let db = db_connect().await;
-    debug!("{:#?}", payload);
 
     let a = ActiveModel {
         channel: set(payload.channel),

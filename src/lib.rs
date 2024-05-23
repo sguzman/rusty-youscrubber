@@ -30,7 +30,6 @@ pub fn validate_json_files() {
         let res_payload: Result<Channel, _> = serde_json::from_str(&contents);
         match res_payload {
             Ok(payload) => {
-                debug!("{:#?}", payload);
                 info!("File {:#?} is valid", payload.title);
             }
             Err(e) => {
