@@ -1,13 +1,17 @@
 use log::{debug, info};
 use sea_orm::prelude::DateTime;
 use sea_orm::ActiveValue::{NotSet, Set};
-use sea_orm::{ActiveModelTrait, ActiveValue, ConnectOptions, Database, DatabaseConnection};
+use sea_orm::Schema;
+use sea_orm::{
+    ActiveModelTrait, ActiveValue, ConnectOptions, ConnectionTrait, Database, DatabaseConnection,
+};
 
 use crate::sea_orm_models::payload::ActiveModel;
 
 use crate::data;
 
 async fn db_connect() -> DatabaseConnection {
+    info!("Connecting to database");
     let mut opt = ConnectOptions::new("sqlite://data.db?mode=rwc");
     opt.max_connections(100)
         .min_connections(5)
@@ -15,7 +19,17 @@ async fn db_connect() -> DatabaseConnection {
         .sqlx_logging_level(log::LevelFilter::Debug)
         .set_schema_search_path("my_schema"); // Setting default PostgreSQL schema
 
+    debug!("{:#?}", opt);
+
     Database::connect(opt).await.unwrap()
+}
+
+async fn create_table(db: &DatabaseConnection) {
+    info!("Creating table");
+    let db_sqlite = db.get_database_backend();
+    let schema = Schema::new(db_sqlite);
+
+    db_sqlite.build(&schema.create_table_from_entity(crate::sea_orm_models::payload::Entity));
 }
 
 // If option set to None, set to NotSet
@@ -71,7 +85,7 @@ fn setu3i(option: Option<u32>) -> ActiveValue<Option<i32>> {
 }
 
 pub async fn create(payload: data::Channel) {
-    let db = db_connect();
+    let db = db_connect().await;
     debug!("{:#?}", payload);
 
     let a = ActiveModel {
@@ -101,5 +115,6 @@ pub async fn create(payload: data::Channel) {
         id: NotSet,
     };
 
-    a.insert(&db.await).await.unwrap();
+    create_table(&db).await;
+    a.insert(&db).await.unwrap();
 }
