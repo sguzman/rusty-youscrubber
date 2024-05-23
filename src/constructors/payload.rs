@@ -3,6 +3,7 @@ use sea_orm::prelude::DateTime;
 use sea_orm::ActiveValue::{NotSet, Set};
 use sea_orm::{ActiveModelTrait, ActiveValue, DatabaseConnection};
 
+use crate::constructors::channel_tags;
 use crate::data;
 use crate::sea_orm_models as sea;
 
@@ -89,7 +90,7 @@ pub async fn create(db: &DatabaseConnection, payload: data::Channel) {
     let inserted = a.insert(db).await;
 
     match inserted {
-        Ok(_) => {
+        Ok(i) => {
             info!("Record inserted");
 
             // Initialize Channel Thumbnails
@@ -102,7 +103,7 @@ pub async fn create(db: &DatabaseConnection, payload: data::Channel) {
             //version(&db, i, payload.version);
 
             // Initialize tags
-            //channel_tags(&db, i.id, payload.tags);
+            channel_tags::create(&db, i.id, payload.tags).await;
         }
         Err(e) => {
             info!("Error: {}", e);

@@ -1,5 +1,6 @@
-use log::{debug, info};
+use log::{debug, info, warn};
 
+use sea_orm::sea_query::Table;
 use sea_orm::EntityTrait;
 use sea_orm::{ConnectOptions, ConnectionTrait, Database, DatabaseConnection};
 use sea_orm::{Schema, Statement};
@@ -22,6 +23,60 @@ async fn db_connect() -> DatabaseConnection {
 
     let db = Database::connect(opt).await.unwrap();
     info!("Connected to database");
+    drop_tables(&db).await;
+    create_tables(&db).await;
+
+    db
+}
+
+// Drop table
+pub async fn drop_tables(db: &DatabaseConnection) {
+    info!("Dropping tables");
+
+    drop_table::<sea::videothumbnail::Entity>(&db).await;
+    drop_table::<sea::videocategory::Entity>(&db).await;
+    drop_table::<sea::version::Entity>(&db).await;
+    drop_table::<sea::subtitletype::Entity>(&db).await;
+    drop_table::<sea::subtitle::Entity>(&db).await;
+    drop_table::<sea::requesteddownload::Entity>(&db).await;
+    drop_table::<sea::httpheader::Entity>(&db).await;
+    drop_table::<sea::heatmap::Entity>(&db).await;
+    drop_table::<sea::fragment::Entity>(&db).await;
+    drop_table::<sea::formatsortfield::Entity>(&db).await;
+    drop_table::<sea::format::Entity>(&db).await;
+    drop_table::<sea::entry::Entity>(&db).await;
+    drop_table::<sea::chapter::Entity>(&db).await;
+    drop_table::<sea::channelthumbnail::Entity>(&db).await;
+    drop_table::<sea::channeltag::Entity>(&db).await;
+    drop_table::<sea::channelcategory::Entity>(&db).await;
+    drop_table::<sea::automaticcaptions::Entity>(&db).await;
+    drop_table::<sea::caption::Entity>(&db).await;
+    drop_table::<sea::payload::Entity>(&db).await;
+}
+
+async fn drop_table<T>(db: &DatabaseConnection)
+where
+    T: EntityTrait,
+{
+    info!("Dropping table {:#?}", T::default());
+    let db_sqlite = db.get_database_backend();
+    let schema = Schema::new(db_sqlite);
+    let mut table = Table::drop();
+    let t = table.table::<T>(T::default());
+
+    let b = db_sqlite.build(t);
+
+    let result = db.execute(Statement::from(b)).await;
+
+    match result {
+        Ok(_) => info!("Table dropped"),
+        Err(e) => {
+            warn!("Error: {}", e);
+        }
+    }
+}
+
+async fn create_tables(db: &DatabaseConnection) {
     create_table::<sea::payload::Entity>(&db).await;
     create_table::<sea::automaticcaptions::Entity>(&db).await;
     create_table::<sea::caption::Entity>(&db).await;
@@ -41,8 +96,6 @@ async fn db_connect() -> DatabaseConnection {
     create_table::<sea::version::Entity>(&db).await;
     create_table::<sea::videocategory::Entity>(&db).await;
     create_table::<sea::videothumbnail::Entity>(&db).await;
-
-    db
 }
 
 async fn create_table<T>(db: &DatabaseConnection)
@@ -60,7 +113,7 @@ where
     match result {
         Ok(_) => info!("Table created"),
         Err(e) => {
-            info!("Error: {}", e);
+            panic!("Error: {}", e);
         }
     }
 }
@@ -68,4 +121,7 @@ where
 pub async fn insert(payload: data::Channel) {
     let db = db_connect().await;
     ctor::payload::create(&db, payload).await;
+
+    info!("Record inserted");
+    db.close().await.unwrap();
 }
