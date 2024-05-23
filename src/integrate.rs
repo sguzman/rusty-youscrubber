@@ -1,10 +1,22 @@
+use log::info;
 use sea_orm::prelude::DateTime;
-use sea_orm::ActiveValue;
 use sea_orm::ActiveValue::{NotSet, Set};
+use sea_orm::{ActiveValue, ConnectOptions, Database, DatabaseConnection};
 
 use crate::sea_orm_models::payload::ActiveModel;
 
 use crate::data;
+
+async fn db_connect() -> DatabaseConnection {
+    let mut opt = ConnectOptions::new("sqlite://db.sqlite?mode=rwc");
+    opt.max_connections(100)
+        .min_connections(5)
+        .sqlx_logging(true)
+        .sqlx_logging_level(log::LevelFilter::Info)
+        .set_schema_search_path("my_schema"); // Setting default PostgreSQL schema
+
+    Database::connect(opt).await.unwrap()
+}
 
 // If option set to None, set to NotSet
 pub fn set<T>(option: Option<T>) -> ActiveValue<T>
@@ -61,7 +73,10 @@ fn setu3i(option: Option<u32>) -> ActiveValue<Option<i32>> {
     }
 }
 
-pub fn create(payload: data::Channel) -> ActiveModel {
+pub async fn create(payload: data::Channel) {
+    let db = db_connect();
+    info!("{:#?}", payload);
+
     ActiveModel {
         channel: set(payload.channel),
         channel_follower_count: setui(payload.channel_follower_count),
@@ -87,5 +102,7 @@ pub fn create(payload: data::Channel) -> ActiveModel {
         webpage_url_basename: Set(payload.webpage_url_basename),
         webpage_url_host: Set(payload.webpage_url_domain),
         id: NotSet,
-    }
+    };
+
+    db.await.close().await.unwrap();
 }
