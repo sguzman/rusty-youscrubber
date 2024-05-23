@@ -210,6 +210,7 @@ pub struct ChannelThumbnail {
     pub resolution: Option<String>,
     pub url: Option<String>,
     pub width: Option<u32>,
+    pub preference: Option<i32>,
 }
 
 // pub Struct to represent the thumbnails field in the json files

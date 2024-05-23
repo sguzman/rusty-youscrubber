@@ -94,7 +94,7 @@ pub async fn create(db: &DatabaseConnection, payload: data::Channel) {
             info!("Record inserted");
 
             // Initialize Channel Thumbnails
-            //channel_thumbnails(&db, i.id, payload.thumbnails);
+            ctor::channel_thumbnails::create(&db, i.id, payload.thumbnails);
 
             // Initialize entries
             //entries(&db, payload.entries);
