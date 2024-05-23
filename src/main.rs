@@ -18,7 +18,7 @@ fn init_logger() {
     builder.init();
 }
 
-pub fn convert_json_to_db() {
+pub async fn convert_json_to_db() {
     let path = Path::new("resources");
 
     let mut files = Vec::new();
@@ -42,7 +42,7 @@ pub fn convert_json_to_db() {
             Ok(payload) => {
                 info!("{:#?}", payload);
                 debug!("File {:#?} is valid", payload.title);
-                create(payload);
+                create(payload).await;
             }
             Err(e) => {
                 error!("Error: {}", e);
@@ -52,10 +52,11 @@ pub fn convert_json_to_db() {
     }
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     init_logger();
     info!("Hello, world!");
     validate_json_files();
-    convert_json_to_db();
+    convert_json_to_db().await;
     info!("Goodbye, world!");
 }

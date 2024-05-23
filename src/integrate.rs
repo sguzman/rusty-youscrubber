@@ -1,7 +1,7 @@
 use log::info;
 use sea_orm::prelude::DateTime;
 use sea_orm::ActiveValue::{NotSet, Set};
-use sea_orm::{ActiveValue, ConnectOptions, Database, DatabaseConnection};
+use sea_orm::{ActiveModelTrait, ActiveValue, ConnectOptions, Database, DatabaseConnection};
 
 use crate::sea_orm_models::payload::ActiveModel;
 
@@ -45,20 +45,17 @@ fn setsi(option: Option<String>) -> ActiveValue<Option<i32>> {
 
 fn setus(option: Option<u64>) -> ActiveValue<Option<sea_orm::prelude::DateTime>> {
     match option {
+        // Do not warn about deprecated usage
+        #[allow(deprecated)]
         Some(value) => Set(Some(DateTime::from_timestamp(value as i64, 0).into())),
-        None => NotSet,
-    }
-}
-
-fn setsin(option: Option<String>) -> ActiveValue<i32> {
-    match option {
-        Some(value) => Set(value.parse::<i32>().unwrap()),
         None => NotSet,
     }
 }
 
 fn setsu(option: Option<String>) -> ActiveValue<Option<sea_orm::prelude::DateTime>> {
     match option {
+        // Do not warn about deprecated usage
+        #[allow(deprecated)]
         Some(value) => Set(Some(
             DateTime::from_timestamp(value.parse::<i64>().unwrap(), 0).into(),
         )),
@@ -77,7 +74,7 @@ pub async fn create(payload: data::Channel) {
     let db = db_connect();
     info!("{:#?}", payload);
 
-    ActiveModel {
+    let a = ActiveModel {
         channel: set(payload.channel),
         channel_follower_count: setui(payload.channel_follower_count),
         channel_id: set(payload.channel_id),
@@ -104,5 +101,5 @@ pub async fn create(payload: data::Channel) {
         id: NotSet,
     };
 
-    db.await.close().await.unwrap();
+    a.insert(&db.await).await.unwrap();
 }
