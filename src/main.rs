@@ -1,22 +1,14 @@
+use log::debug;
+use log::error;
 use log::info;
-use sea_orm::Database;
 
-use sea_orm::DbErr;
+use std::path::Path;
 
-// Change this according to your database implementation,
-// or supply it as an environment variable.
-// the whole database URL string follows the following format:
-// "protocol://username:password@host:port/database"
-// We put the database name (that last bit) in a separate variable simply for convenience.
-const DATABASE_URL: &str = "sqlite::memory:";
-const DB_NAME: &str = "youtube";
+pub mod data;
+mod integrate;
+pub mod sea_orm_models;
 
-async fn run() -> Result<(), DbErr> {
-    let db = Database::connect(DATABASE_URL).await?;
-
-    Ok(())
-}
-
+use integrate::create;
 use yourust::validate_json_files;
 
 // Set logging to debug
@@ -26,9 +18,44 @@ fn init_logger() {
     builder.init();
 }
 
+pub fn convert_json_to_db() {
+    let path = Path::new("resources");
+
+    let mut files = Vec::new();
+
+    for entry in path.read_dir().expect("read_dir call failed") {
+        let entry = entry.expect("entry failed");
+        let path = entry.path();
+
+        if path.is_file() {
+            files.push(path);
+        }
+    }
+
+    for file in files {
+        println!("{}", file.display());
+        // Use serde to parse the json file
+        let contents =
+            std::fs::read_to_string(file).expect("Something went wrong reading the file");
+        let res_payload: Result<data::Channel, _> = serde_json::from_str(&contents);
+        match res_payload {
+            Ok(payload) => {
+                info!("{:#?}", payload);
+                debug!("File {:#?} is valid", payload.title);
+                create(payload);
+            }
+            Err(e) => {
+                error!("Error: {}", e);
+                std::process::exit(1);
+            }
+        }
+    }
+}
+
 fn main() {
     init_logger();
     info!("Hello, world!");
     validate_json_files();
+    convert_json_to_db();
     info!("Goodbye, world!");
 }
