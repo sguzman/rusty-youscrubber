@@ -3,7 +3,7 @@ use sea_orm::prelude::DateTime;
 use sea_orm::ActiveValue::{NotSet, Set};
 use sea_orm::{ActiveModelTrait, ActiveValue, DatabaseConnection};
 
-use crate::constructors::channel_tags;
+use crate::constructors as ctor;
 use crate::data;
 use crate::sea_orm_models as sea;
 
@@ -100,10 +100,10 @@ pub async fn create(db: &DatabaseConnection, payload: data::Channel) {
             //entries(&db, payload.entries);
 
             // Initialize version
-            //version(&db, i, payload.version);
+            ctor::version::create(&db, i.id, payload.version).await;
 
             // Initialize tags
-            channel_tags::create(&db, i.id, payload.tags).await;
+            ctor::channel_tags::create(&db, i.id, payload.tags).await;
         }
         Err(e) => {
             info!("Error: {}", e);
