@@ -94,6 +94,8 @@ pub struct RequestedDownload {
     pub aspect_ratio: Option<f32>,
     pub asr: Option<u32>,
     pub audio_channels: Option<u8>,
+    pub audio_ext: Option<String>,
+    pub columns: Option<u32>,
     pub dynamic_range: Option<String>,
     pub ext: Option<String>,
     pub filename: Option<String>,

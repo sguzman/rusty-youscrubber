@@ -7,6 +7,7 @@ pub mod format_sort_field;
 pub mod formats;
 pub mod heatmaps;
 pub mod payload;
+pub mod requested_download;
 pub mod subtitle_type;
 pub mod subtitles;
 pub mod version;

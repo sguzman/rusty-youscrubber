@@ -159,7 +159,7 @@ pub async fn create(db: &DatabaseConnection, vs: Vec<Video>) {
                 ctor::heatmaps::create(&db, vi.id, v.heatmaps).await;
 
                 // Requested Downloads
-                //requested_download(e, d.get("requested_download"))
+                ctor::requested_download::create(&db, v.requested_downloads).await;
 
                 // Requested Formats
                 //formats(e, d.get("requested_formats"))
