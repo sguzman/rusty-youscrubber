@@ -168,7 +168,7 @@ pub async fn create(db: &DatabaseConnection, vs: Vec<Video>) {
                 //subtitle_type(e, d.get("subtitles"))
 
                 // Video Thumbnails
-                //video_thumbnails(e, d.get("thumbnails"))
+                ctor::video_thumbnails::create(&db, vi.id, v.thumbnails).await;
 
                 // Tags
                 ctor::video_tags::create(&db, vi.id, v.tags).await;

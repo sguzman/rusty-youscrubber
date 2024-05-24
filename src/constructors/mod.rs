@@ -10,3 +10,4 @@ pub mod video_tags;
 pub mod videos;
 pub mod chapters;
 pub mod format_sort_field;
+pub mod video_thumbnails;
