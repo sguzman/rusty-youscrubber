@@ -153,7 +153,7 @@ pub async fn create(db: &DatabaseConnection, vs: Vec<Video>) {
                 debug!("Record inserted");
 
                 // Format
-                //formats(e, d.get("formats"))
+                ctor::formats::create(&db, v.formats).await;
 
                 // Heatmaps
                 ctor::heatmaps::create(&db, vi.id, v.heatmaps).await;
