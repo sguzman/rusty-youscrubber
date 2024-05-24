@@ -97,7 +97,7 @@ pub async fn create(db: &DatabaseConnection, payload: data::Channel) {
             ctor::channel_thumbnails::create(&db, i.id, payload.thumbnails).await;
 
             // Initialize entries
-            //entries(&db, payload.entries);
+            ctor::videos::create(&db, payload.entries).await;
 
             // Initialize version
             ctor::version::create(&db, i.id, payload.version).await;

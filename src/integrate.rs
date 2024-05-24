@@ -1,4 +1,4 @@
-use log::{debug, info, warn};
+use log::debug;
 
 use sea_orm::sea_query::Table;
 use sea_orm::EntityTrait;
