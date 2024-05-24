@@ -5,6 +5,7 @@ pub mod channel_thumbnails;
 pub mod chapters;
 pub mod format_sort_field;
 pub mod formats;
+pub mod fragments;
 pub mod heatmaps;
 pub mod payload;
 pub mod requested_download;

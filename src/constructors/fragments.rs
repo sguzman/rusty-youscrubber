@@ -1,5 +1,4 @@
-use crate::data::Chapters;
-use crate::sea_orm_models as sea;
+use crate::{data, sea_orm_models as sea};
 use sea_orm::entity::*;
 use sea_orm::{ActiveValue, DatabaseConnection};
 
@@ -12,17 +11,16 @@ fn setff64(option: Option<f32>) -> ActiveValue<Option<f64>> {
     }
 }
 
-pub async fn create(db: &DatabaseConnection, video_id: i32, cso: Option<Vec<Chapters>>) {
-    if let Some(cs) = cso {
-        let all = cs.into_iter().map(|c| sea::chapter::ActiveModel {
+pub async fn create(db: &DatabaseConnection, video_id: i32, hso: Option<Vec<data::Fragment>>) {
+    if let Some(hs) = hso {
+        let all = hs.into_iter().map(|e| sea::fragment::ActiveModel {
             id: NotSet,
             video_id: Set(video_id.try_into().unwrap()),
-            title: Set(c.title),
-            start_time: setff64(c.start_time),
-            end_time: setff64(c.end_time),
+            duration: setff64(e.duration),
+            url: Set(e.url),
         });
 
-        sea::chapter::Entity::insert_many(all)
+        sea::fragment::Entity::insert_many(all)
             .exec(db)
             .await
             .expect("Error creating video tags");
