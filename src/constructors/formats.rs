@@ -1,5 +1,6 @@
 use crate::sea_orm_models as sea;
-use sea_orm::{ActiveModelTrait, ActiveValue, DatabaseConnection};
+use sea_orm::{ActiveValue, DatabaseConnection};
+use sea_orm::entity::*;
 
 use crate::data;
 use sea_orm::ActiveValue::{NotSet, Set};
@@ -34,8 +35,8 @@ fn setfi(option: Option<f32>) -> ActiveValue<Option<i32>> {
 
 pub async fn create(db: &DatabaseConnection, ts: Option<Vec<data::Format>>) {
     if let Some(tags) = ts {
-        for tag in tags {
-            let tag = sea::format::ActiveModel {
+        let all = tags.into_iter().map(|tag| {
+            sea::format::ActiveModel {
                 id: NotSet,
                 url: Set(tag.url),
                 width: setui(tag.width),
@@ -57,9 +58,12 @@ pub async fn create(db: &DatabaseConnection, ts: Option<Vec<data::Format>>) {
                 vbr: setfi(tag.vbr),
                 vcodec: Set(tag.vcodec),
                 video_ext: Set(tag.video_ext),
-            };
+            }
+        });
 
-            tag.insert(db).await.unwrap();
-        }
+        sea::format::Entity::insert_many(all)
+            .exec(db)
+            .await
+            .expect("Error creating video tags");
     }
 }
