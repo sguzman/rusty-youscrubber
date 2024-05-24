@@ -1,4 +1,5 @@
 use crate::sea_orm_models as sea;
+use log::{debug, warn};
 use sea_orm::entity::*;
 use sea_orm::DatabaseConnection;
 
@@ -12,9 +13,11 @@ pub async fn create(db: &DatabaseConnection, video_id: i32, tags: Option<Vec<Str
             tag: Set(Some(tag)),
         });
 
-        sea::videotag::Entity::insert_many(all)
-            .exec(db)
-            .await
-            .expect("Error creating video tags");
+        let result = sea::videotag::Entity::insert_many(all).exec(db).await;
+
+        match result {
+            Ok(_) => debug!("Video tags created"),
+            Err(_) => warn!("Error creating video tags"),
+        }
     }
 }
