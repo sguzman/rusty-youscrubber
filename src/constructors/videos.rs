@@ -180,7 +180,7 @@ pub async fn create(db: &DatabaseConnection, vs: Vec<Video>) {
                 //automatic_captions(e, d.get("automatic_captions"))
 
                 // Video Categories
-                //video_categories(e, d.get("categories"))
+                ctor::video_categories::create(&db, vi.id, v.categories).await;
 
                 // Chapters
                 //chapters(e, d.get("chapters"))
