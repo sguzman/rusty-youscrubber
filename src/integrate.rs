@@ -16,7 +16,7 @@ async fn db_connect() -> DatabaseConnection {
     opt.max_connections(100)
         .min_connections(5)
         .sqlx_logging(true)
-        .sqlx_logging_level(log::LevelFilter::Info)
+        .sqlx_logging_level(log::LevelFilter::Debug)
         .set_schema_search_path("data"); // Setting default PostgreSQL schema
 
     debug!("{:#?}", opt);
