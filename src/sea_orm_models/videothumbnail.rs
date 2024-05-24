@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub id: i32,
+    pub video_id: i32,
     pub thumbnail_id: Option<String>,
     pub preference: Option<i32>,
     pub url: Option<String>,
