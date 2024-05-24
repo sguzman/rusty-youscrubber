@@ -3,8 +3,11 @@ use sea_orm::{ActiveModelTrait, ActiveValue, DatabaseConnection};
 
 use crate::data::Video;
 
+use log::debug;
 use sea_orm::prelude::DateTime;
 use sea_orm::ActiveValue::{NotSet, Set};
+
+use crate::constructors as ctor;
 
 fn setui(option: Option<u32>) -> ActiveValue<Option<i32>> {
     match option {
@@ -143,6 +146,48 @@ pub async fn create(db: &DatabaseConnection, vs: Vec<Video>) {
             dynamic_range: num(v.dynamic_range),
         };
 
-        ve.insert(db).await.unwrap();
+        let ve = ve.insert(db).await;
+
+        match ve {
+            Ok(vi) => {
+                debug!("Record inserted");
+
+                // Format
+                //formats(e, d.get("formats"))
+
+                // Heatmaps
+                ctor::heatmaps::create(&db, vi.id, v.heatmaps).await;
+
+                // Requested Downloads
+                //requested_download(e, d.get("requested_download"))
+
+                // Requested Formats
+                //formats(e, d.get("requested_formats"))
+
+                // Subtitles
+                //subtitle_type(e, d.get("subtitles"))
+
+                // Video Thumbnails
+                //video_thumbnails(e, d.get("thumbnails"))
+
+                // Tags
+                //video_tags(e, d.get("tags"))
+
+                // Format Sort Field
+                //format_sort_field(e, d.get("format_sort_field"))
+
+                // Automatic Captions
+                //automatic_captions(e, d.get("automatic_captions"))
+
+                // Video Categories
+                //video_categories(e, d.get("categories"))
+
+                // Chapters
+                //chapters(e, d.get("chapters"))
+            }
+            Err(e) => {
+                debug!("Error: {}", e);
+            }
+        }
     }
 }
