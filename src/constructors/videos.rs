@@ -177,7 +177,7 @@ pub async fn create(db: &DatabaseConnection, vs: Vec<Video>) {
                 //format_sort_field(e, d.get("format_sort_field"))
 
                 // Automatic Captions
-                //automatic_captions(e, d.get("automatic_captions"))
+                ctor::automatic_captions::create(&db, vi.id, v.automatic_captions).await;
 
                 // Video Categories
                 ctor::video_categories::create(&db, vi.id, v.categories).await;

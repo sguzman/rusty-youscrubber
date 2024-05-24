@@ -1,3 +1,5 @@
+pub mod automatic_captions;
+pub mod captions;
 pub mod channel_tags;
 pub mod channel_thumbnails;
 pub mod heatmaps;
