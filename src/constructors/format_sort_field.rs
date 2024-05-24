@@ -9,7 +9,6 @@ pub async fn create(db: &DatabaseConnection, ts: Option<Vec<String>>) {
             let tag = sea::formatsortfield::ActiveModel {
                 id: NotSet,
                 field: Set(tag),
-                
             };
 
             tag.insert(db).await.unwrap();
