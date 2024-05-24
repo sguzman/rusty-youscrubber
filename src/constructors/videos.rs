@@ -171,7 +171,7 @@ pub async fn create(db: &DatabaseConnection, vs: Vec<Video>) {
                 //video_thumbnails(e, d.get("thumbnails"))
 
                 // Tags
-                //video_tags(e, d.get("tags"))
+                ctor::video_tags::create(&db, vi.id, v.tags).await;
 
                 // Format Sort Field
                 //format_sort_field(e, d.get("format_sort_field"))

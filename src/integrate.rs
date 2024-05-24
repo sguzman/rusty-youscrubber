@@ -34,6 +34,7 @@ pub async fn drop_tables(db: &DatabaseConnection) {
     debug!("Dropping tables");
 
     drop_table::<sea::videothumbnail::Entity>(&db).await;
+    drop_table::<sea::videotag::Entity>(&db).await;
     drop_table::<sea::videocategory::Entity>(&db).await;
     drop_table::<sea::version::Entity>(&db).await;
     drop_table::<sea::subtitletype::Entity>(&db).await;
@@ -95,6 +96,7 @@ async fn create_tables(db: &DatabaseConnection) {
     create_table::<sea::version::Entity>(&db).await;
     create_table::<sea::videocategory::Entity>(&db).await;
     create_table::<sea::videothumbnail::Entity>(&db).await;
+    create_table::<sea::videotag::Entity>(&db).await;
 }
 
 async fn create_table<T>(db: &DatabaseConnection)
