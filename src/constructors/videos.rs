@@ -162,7 +162,7 @@ pub async fn create(db: &DatabaseConnection, vs: Vec<Video>) {
                 ctor::requested_download::create(&db, v.requested_downloads).await;
 
                 // Requested Formats
-                //formats(e, d.get("requested_formats"))
+                ctor::formats::create(&db, v.requested_formats).await;
 
                 // Subtitles
                 ctor::subtitle_type::create(&db, vi.id, v.subtitles).await;
