@@ -1,6 +1,5 @@
 use crate::constructors as ctor;
 use crate::sea_orm_models as sea;
-use crate::sea_orm_models::caption;
 use sea_orm::{ActiveModelTrait, DatabaseConnection};
 
 use sea_orm::ActiveValue::{NotSet, Set};

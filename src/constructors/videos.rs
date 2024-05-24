@@ -174,7 +174,7 @@ pub async fn create(db: &DatabaseConnection, vs: Vec<Video>) {
                 ctor::video_tags::create(&db, vi.id, v.tags).await;
 
                 // Format Sort Field
-                //format_sort_field(e, d.get("format_sort_field"))
+                ctor::format_sort_field::create(&db, v.format_sort_fields).await;
 
                 // Automatic Captions
                 ctor::automatic_captions::create(&db, vi.id, v.automatic_captions).await;
@@ -183,7 +183,7 @@ pub async fn create(db: &DatabaseConnection, vs: Vec<Video>) {
                 ctor::video_categories::create(&db, vi.id, v.categories).await;
 
                 // Chapters
-                //chapters(e, d.get("chapters"))
+                ctor::chapters::create(&db, vi.id, v.chapters).await;
             }
             Err(e) => {
                 debug!("Error: {}", e);

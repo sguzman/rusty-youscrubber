@@ -8,3 +8,5 @@ pub mod version;
 pub mod video_categories;
 pub mod video_tags;
 pub mod videos;
+pub mod chapters;
+pub mod format_sort_field;
