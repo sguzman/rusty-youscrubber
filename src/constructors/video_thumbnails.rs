@@ -1,8 +1,9 @@
 use crate::data::VideoThumbnail;
 use crate::sea_orm_models as sea;
+use log::{debug, warn};
 use sea_orm::{ActiveModelTrait, DatabaseConnection};
 
-use sea_orm::ActiveValue::{NotSet, Set};
+use sea_orm::ActiveValue::{Set};
 
 pub async fn create(db: &DatabaseConnection, video_id: i32, vtso: Option<Vec<VideoThumbnail>>) {
     if let Some(vts) = vtso {
@@ -10,11 +11,18 @@ pub async fn create(db: &DatabaseConnection, video_id: i32, vtso: Option<Vec<Vid
             let v = sea::videothumbnail::ActiveModel {
                 id: Set(video_id),
                 preference: Set(vt.preference),
-                thumbnail_id: NotSet,
+                thumbnail_id: Set(vt.id),
                 url: Set(vt.url),
             };
 
-            v.insert(db).await.unwrap();
+            let result = v.insert(db).await;
+
+            match result {
+                Ok(_) => debug!("VideoThumbnail created"),
+                Err(e) => {
+                    warn!("Error: {}", e);
+                }
+            }
         }
     }
 }

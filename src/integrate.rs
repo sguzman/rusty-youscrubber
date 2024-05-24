@@ -1,4 +1,4 @@
-use log::debug;
+use log::{debug, warn};
 
 use sea_orm::sea_query::Table;
 use sea_orm::EntityTrait;
@@ -114,7 +114,7 @@ where
     match result {
         Ok(_) => debug!("Table created"),
         Err(e) => {
-            panic!("Error: {}", e);
+            warn!("Error: {}", e);
         }
     }
 }

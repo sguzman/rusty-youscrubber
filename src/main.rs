@@ -33,7 +33,6 @@ pub async fn convert_json_to_db() -> Vec<data::Channel> {
 
     let mut channels = Vec::new();
     for file in files {
-        println!("{}", file.display());
         // Use serde to parse the json file
         let contents =
             std::fs::read_to_string(file).expect("Something went wrong reading the file");
