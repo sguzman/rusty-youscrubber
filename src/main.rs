@@ -13,7 +13,7 @@ use integrate::insert;
 // Set logging to debug
 fn init_logger() {
     let mut builder = env_logger::Builder::from_default_env();
-    builder.filter_level(log::LevelFilter::Debug);
+    builder.filter_level(log::LevelFilter::Warn);
     builder.init();
 }
 

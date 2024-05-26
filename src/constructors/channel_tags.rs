@@ -11,8 +11,14 @@ pub async fn create(db: &DatabaseConnection, payload_id: i32, tags: Vec<String>)
         tag: Set(Some(tag)),
     });
 
-    sea::channeltag::Entity::insert_many(all)
-        .exec(db)
-        .await
-        .expect("Error creating video tags");
+    let out = sea::channeltag::Entity::insert_many(all).exec(db).await;
+
+    match out {
+        Ok(_) => {
+            log::debug!("Tags inserted");
+        }
+        Err(e) => {
+            log::warn!("Error: {}", e);
+        }
+    }
 }
