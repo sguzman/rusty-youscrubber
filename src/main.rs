@@ -5,6 +5,7 @@ use yourust::validate_json_files;
 use std::path::Path;
 
 mod json_models;
+mod json_models2;
 
 // Set logging to debug
 fn init_logger() {
@@ -53,5 +54,6 @@ async fn main() {
     init_logger();
     info!("Hello, world!");
     validate_json_files::<json_models::channel::Channel>();
+    validate_json_files::<json_models2::channel::Channel>();
     info!("Goodbye, world!");
 }

@@ -9,6 +9,7 @@ where
     T: serde::de::DeserializeOwned,
     T: std::fmt::Debug,
 {
+    info!("Validating json files");
     let path = Path::new("resources");
 
     let mut files = Vec::new();
@@ -21,6 +22,9 @@ where
             files.push(path);
         }
     }
+
+    // Sort the files
+    files.sort();
 
     for file in files {
         println!("{}", file.display());
@@ -38,4 +42,6 @@ where
             }
         }
     }
+
+    info!("All files are valid");
 }
