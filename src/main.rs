@@ -53,7 +53,6 @@ pub async fn convert_json_to_db() -> Vec<json_models::channel::Channel> {
 async fn main() {
     init_logger();
     info!("Hello, world!");
-    validate_json_files::<json_models::channel::Channel>();
-    validate_json_files::<json_models2::channel::Channel>();
+    validate_json_files::<json_models::channel::Channel, json_models2::channel::Channel>();
     info!("Goodbye, world!");
 }

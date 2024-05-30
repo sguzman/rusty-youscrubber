@@ -1,13 +1,15 @@
 use std::path::Path;
 
 // Import the log and env_logger crates
-use log::{error, info};
+use log::{error, info, warn};
 
 // Iterate across all the json files in resources directory
-pub fn validate_json_files<T>()
+pub fn validate_json_files<A, B>()
 where
-    T: serde::de::DeserializeOwned,
-    T: std::fmt::Debug,
+    A: serde::de::DeserializeOwned,
+    A: std::fmt::Debug,
+    B: serde::de::DeserializeOwned,
+    B: std::fmt::Debug,
 {
     info!("Validating json files");
     let path = Path::new("resources");
@@ -31,14 +33,24 @@ where
         // Use serde to parse the json file
         let contents =
             std::fs::read_to_string(file).expect("Something went wrong reading the file");
-        let res_payload: Result<T, _> = serde_json::from_str(&contents);
+        let res_payload: Result<A, _> = serde_json::from_str(&contents);
         match res_payload {
             Ok(_) => {
-                info!("File is valid");
+                info!("File (Type A) is valid");
             }
             Err(e) => {
                 error!("Error: {}", e);
-                std::process::exit(1);
+                warn!("Trying Type B");
+                let res_payload: Result<B, _> = serde_json::from_str(&contents);
+                match res_payload {
+                    Ok(_) => {
+                        info!("File (Type B) is valid");
+                    }
+                    Err(e) => {
+                        error!("Error: {}", e);
+                        std::process::exit(1);
+                    }
+                }
             }
         }
     }

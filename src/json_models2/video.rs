@@ -1,10 +1,10 @@
-use crate::json_models::automatic_caption::AutomaticCaption;
-use crate::json_models::chapters::Chapters;
-use crate::json_models::format::Format;
-use crate::json_models::heatmap::HeatMap;
-use crate::json_models::requested_download::RequestedDownload;
-use crate::json_models::subtitle::Subtitle;
-use crate::json_models::video_thumbnail::VideoThumbnail;
+use crate::json_models2::automatic_caption::AutomaticCaption;
+use crate::json_models2::chapters::Chapters;
+use crate::json_models2::format::Format;
+use crate::json_models2::heatmap::HeatMap;
+use crate::json_models2::requested_download::RequestedDownload;
+use crate::json_models2::subtitle::Subtitle;
+use crate::json_models2::video_thumbnail::VideoThumbnail;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
