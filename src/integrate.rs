@@ -4,10 +4,9 @@ use sea_orm::EntityTrait;
 use sea_orm::{ConnectOptions, ConnectionTrait, Database, DatabaseConnection};
 use sea_orm::{Schema, Statement};
 
-use crate::constructors as ctor;
+use crate::constructors_models as ctor;
 use crate::sea_orm_models as sea;
 
-use crate::data;
 
 async fn db_connect() -> DatabaseConnection {
     debug!("Connecting to database");

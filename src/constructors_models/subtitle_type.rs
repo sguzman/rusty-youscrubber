@@ -1,4 +1,4 @@
-use crate::constructors as ctor;
+use crate::constructors_models as ctor;
 use crate::sea_orm_models as sea;
 use sea_orm::{ActiveModelTrait, DatabaseConnection};
 

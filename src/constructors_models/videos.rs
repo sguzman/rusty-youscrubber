@@ -7,7 +7,7 @@ use log::debug;
 use sea_orm::prelude::DateTime;
 use sea_orm::ActiveValue::{NotSet, Set};
 
-use crate::constructors as ctor;
+use crate::constructors_models as ctor;
 
 fn setui(option: Option<u32>) -> ActiveValue<Option<i32>> {
     match option {

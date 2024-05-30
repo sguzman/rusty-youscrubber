@@ -3,7 +3,7 @@ use sea_orm::prelude::DateTime;
 use sea_orm::ActiveValue::{NotSet, Set};
 use sea_orm::{ActiveModelTrait, ActiveValue, DatabaseConnection};
 
-use crate::constructors as ctor;
+use crate::constructors_models as ctor;
 use crate::data;
 use crate::sea_orm_models as sea;
 

@@ -1,14 +1,10 @@
 use log::error;
 use log::info;
+use yourust::validate_json_files;
 
 use std::path::Path;
 
-mod constructors;
-pub mod data;
-mod integrate;
-pub mod sea_orm_models;
-
-use integrate::insert;
+mod json_models;
 
 // Set logging to debug
 fn init_logger() {
@@ -17,7 +13,7 @@ fn init_logger() {
     builder.init();
 }
 
-pub async fn convert_json_to_db() -> Vec<data::Channel> {
+pub async fn convert_json_to_db() -> Vec<json_models::channel::Channel> {
     let path = Path::new("resources");
 
     let mut files = Vec::new();
@@ -36,7 +32,7 @@ pub async fn convert_json_to_db() -> Vec<data::Channel> {
         // Use serde to parse the json file
         let contents =
             std::fs::read_to_string(file).expect("Something went wrong reading the file");
-        let res_payload: Result<data::Channel, _> = serde_json::from_str(&contents);
+        let res_payload: Result<json_models::channel::Channel, _> = serde_json::from_str(&contents);
         match res_payload {
             Ok(payload) => {
                 info!("File {:#?} is valid", payload.title);
@@ -56,7 +52,6 @@ pub async fn convert_json_to_db() -> Vec<data::Channel> {
 async fn main() {
     init_logger();
     info!("Hello, world!");
-    let cs = convert_json_to_db().await;
-    insert(cs).await;
+    validate_json_files::<json_models::channel::Channel>();
     info!("Goodbye, world!");
 }
